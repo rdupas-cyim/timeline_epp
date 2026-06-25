@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<!-- saved from url=(0073)file:///C:/Users/rdupas/Downloads/timeline_interactive_EPP_v20_final.html -->
+<html lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entretiens de Parcours Professionnels</title>
+<style>
+:root{
+  --navy:#071f2f;
+  --orange:#e85d04;
+  --gold:#dcc785;
+  --cream:#f7f1df;
+  --light:#f6f7f9;
+  --red:#8b0000;
+  --text:#152331;
+  --muted:#667085;
+  --line:#102b3c;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Aptos, Arial, Helvetica, sans-serif;
+  background:var(--light);
+  color:var(--text);
+}
+.header{
+  background:var(--navy);
+  color:white;
+  padding:30px 48px 26px;
+  text-align:center;
+}
+.header h1{
+  margin:0;
+  font-size:34px;
+  line-height:1.15;
+}
+.header p{
+  margin:10px 0 0;
+  font-size:18px;
+  opacity:.92;
+}
+.intro{
+  max-width:1180px;
+  margin:28px auto 0;
+  background:white;
+  border-left:8px solid var(--gold);
+  border-radius:14px;
+  padding:20px 24px;
+  box-shadow:0 6px 18px rgba(0,0,0,.08);
+  font-size:18px;
+  font-weight:700;
+}
+.themes{
+  max-width:1180px;
+  margin:22px auto 0;
+  background:white;
+  border-radius:18px;
+  padding:22px 24px;
+  box-shadow:0 6px 18px rgba(0,0,0,.08);
+}
+.themes h2{
+  margin:0 0 16px;
+  font-size:22px;
+  color:var(--navy);
+}
+.theme-grid{
+  display:grid;
+  grid-template-columns:repeat(5, 1fr);
+  gap:14px;
+}
+.theme-card{
+  background:var(--cream);
+  border:1px solid #eadcae;
+  border-radius:14px;
+  padding:14px 12px;
+  text-align:center;
+  min-height:125px;
+}
+.theme-icon{
+  font-size:32px;
+  line-height:1;
+  margin-bottom:10px;
+}
+.theme-card strong{
+  display:block;
+  font-size:15px;
+  line-height:1.25;
+}
+.wrapper{
+  max-width:1180px;
+  margin:34px auto;
+  background:white;
+  border-radius:20px;
+  padding:28px 28px 34px;
+  box-shadow:0 8px 25px rgba(0,0,0,.09);
+}
+.timeline{
+  position:relative;
+  display:grid;
+  grid-template-columns:repeat(8, 1fr);
+  gap:10px;
+  padding:22px 0 10px;
+}
+
+.timeline:before{
+  content:"";
+  position:absolute;
+  top:55px;
+  left:7%;
+  right:1.4%;
+  height:4px;
+  background:var(--line);
+  border-radius:8px;
+}
+.step{
+  position:relative;
+  text-align:center;
+  z-index:2;
+}
+.bubble{
+  width:70px;
+  height:70px;
+  margin:0 auto 12px;
+  border-radius:50%;
+  background:var(--orange);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  font-size:18px;
+  cursor:pointer;
+  border:5px solid white;
+  box-shadow:0 4px 14px rgba(0,0,0,.22);
+  transition:.2s ease;
+}
+.bubble:hover{
+  transform:translateY(-3px);
+  background:#c44700;
+}
+.bubble.active{
+  transform:translateY(-3px);
+  background:#15803d;
+  box-shadow:0 0 0 6px rgba(21,128,61,.20), 0 6px 18px rgba(0,0,0,.24);
+}
+.bubble.small-text{
+  font-size:15px;
+}
+.bubble.tiny-text{
+  font-size:14px;
+  line-height:1.05;
+  flex-direction:column;
+}
+.label{
+  font-size:15px;
+  font-weight:800;
+  color:var(--navy);
+  line-height:1.2;
+}
+.sublabel{
+  margin-top:4px;
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.2;
+}
+
+.continuation{
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  min-height:112px;
+  padding-top:14px;
+  position:relative;
+  z-index:6;
+}
+.repeat-text{
+  background:white;
+  border:2px solid var(--line);
+  color:var(--navy);
+  border-radius:14px;
+  padding:9px 12px;
+  box-shadow:0 4px 12px rgba(0,0,0,.08);
+  text-align:center;
+  line-height:1.1;
+  position:relative;
+  z-index:8;
+  min-width:92px;
+}
+.repeat-text span{
+  display:block;
+  font-size:12px;
+  font-weight:700;
+}
+.repeat-text strong{
+  display:block;
+  font-size:12px;
+  font-weight:700;
+}
+
+
+.end-arrow{
+  position:absolute;
+  top:47px;
+  right:0.2%;
+  width:0;
+  height:0;
+  border-top:11px solid transparent;
+  border-bottom:11px solid transparent;
+  border-left:18px solid var(--line);
+  z-index:5;
+}
+
+.details{
+  margin-top:26px;
+  border-top:1px solid #e6e8ec;
+  padding-top:24px;
+}
+.panel{
+  display:none;
+  background:#fbfcfd;
+  border:1px solid #e1e5ea;
+  border-radius:16px;
+  padding:24px;
+}
+.panel.active{display:block}
+.panel-head{
+  display:flex;
+  align-items:flex-start;
+  gap:18px;
+  margin-bottom:12px;
+}
+.panel-icon{
+  flex:0 0 auto;
+  font-size:44px;
+  line-height:1;
+  padding-top:2px;
+}
+.panel h3{
+  margin:0 0 6px;
+  font-size:24px;
+  color:var(--navy);
+}
+.panel p{
+  margin:8px 0;
+  font-size:17px;
+  line-height:1.5;
+}
+.panel ul{
+  margin:10px 0 0 20px;
+  padding:0;
+}
+.panel li{
+  margin:8px 0;
+  font-size:16px;
+  line-height:1.4;
+}
+.ecrit{
+  color:var(--red);
+  font-weight:800;
+}
+.alert{
+  margin-top:14px;
+  background:#fff3f0;
+  border-left:6px solid var(--orange);
+  padding:12px 14px;
+  border-radius:10px;
+  font-weight:700;
+}
+.badge{
+  display:inline-block;
+  background:var(--gold);
+  color:var(--navy);
+  border-radius:999px;
+  padding:5px 10px;
+  font-size:13px;
+  font-weight:800;
+  margin-bottom:8px;
+}
+@media(max-width:900px){
+  .header{padding:24px}
+  .header h1{font-size:27px}
+  .theme-grid{grid-template-columns:1fr 1fr}
+  .timeline{
+    grid-template-columns:1fr;
+    gap:22px;
+  }
+  
+.timeline:before{
+  content:"";
+  position:absolute;
+  top:55px;
+  left:7%;
+  right:1.4%;
+  height:4px;
+  background:var(--line);
+  border-radius:8px;
+}
+  .step{
+    display:grid;
+    grid-template-columns:80px 1fr;
+    align-items:center;
+    text-align:left;
+  }
+  .bubble{margin:0}
+}
+
+/* Dynamique sans modifier le design V5 */
+.details .panel[hidden]{display:none !important;}
+.details .panel{display:none;}
+.details .panel.active:not([hidden]){display:block;}
+
+</style>
+</head>
+<body>
+<header class="header">
+  <h1>Les Entretiens de Parcours Professionnels</h1>
+  <p>Loi n° 2025-989 du 24 octobre 2025</p>
+</header>
+
+<section class="intro">
+  Les Entretiens de Parcours Professionnels sont organisés tout au long de la vie professionnelle du salarié dans l'entreprise.
+</section>
+
+<section class="themes">
+  <h2>Thèmes obligatoires à évoquer lors de chaque EPP</h2>
+  <div class="theme-grid">
+    <div class="theme-card">
+      <div class="theme-icon">📈</div>
+      <strong>Compétences et qualifications</strong>
+    </div>
+    <div class="theme-card">
+      <div class="theme-icon">🧭</div>
+      <strong>Situation et<br>parcours du salarié</strong>
+    </div>
+    <div class="theme-card">
+      <div class="theme-icon">🎓</div>
+      <strong>Besoins<br>en formation</strong>
+    </div>
+    <div class="theme-card">
+      <div class="theme-icon">🔁</div>
+      <strong>Souhaits<br>d’évolution</strong>
+    </div>
+    <div class="theme-card">
+      <div class="theme-icon">💼</div>
+      <strong>Ressources<br>(CEP, CPF...)</strong>
+    </div>
+  </div>
+</section>
+
+<main class="wrapper">
+  
+<div class="timeline">
+
+  <div class="step">
+    <button class="bubble" aria-selected="false" onclick="showPanel(&#39;p1&#39;, this)">1 an</button>
+    <div class="label">Première année - Initial</div>
+    <div class="sublabel">État des lieux et projection</div>
+  </div>
+
+  <div class="step">
+    <button class="bubble" onclick="showPanel(&#39;p4&#39;, this)" aria-selected="false">4 ans</button>
+    <div class="label">Bilan intermédiaire</div>
+    <div class="sublabel">EPP périodique</div>
+  </div>
+
+  <div class="step">
+    <button class="bubble" onclick="showPanel(&#39;p8&#39;, this)" aria-selected="false">8 ans</button>
+    <div class="label">État des lieux</div>
+    <div class="sublabel">Parcours professionnel</div>
+  </div>
+
+  <div class="step">
+    <button class="bubble" onclick="showPanel(&#39;p12&#39;, this)" aria-selected="false">12 ans</button>
+    <div class="label">Bilan intermédiaire</div>
+    <div class="sublabel">EPP périodique</div>
+  </div>
+
+  <div class="step continuation">
+    <div class="repeat-text">
+      <span>Rythme EPP</span>
+      <strong>tous les 4 ans</strong>
+    </div>
+  </div>
+
+  <div class="step">
+    <button class="bubble small-text" onclick="showPanel(&#39;preprise&#39;, this)" aria-selected="false">Reprise</button>
+    <div class="label">Reprise après absence</div>
+    <div class="sublabel">Absences longues</div>
+  </div>
+
+  <div class="step">
+    <button class="bubble" onclick="showPanel(&#39;p45&#39;, this)" aria-selected="false">45 ans</button>
+    <div class="label">Mi-carrière</div>
+    <div class="sublabel">Après visite médicale</div>
+  </div>
+
+  <div class="step">
+    <button class="bubble tiny-text active" onclick="showPanel(&#39;p5860&#39;, this)" aria-selected="true">58-60<br>ans</button>
+    <div class="label">Fin de carrière</div>
+    <div class="sublabel">Maintien dans l’emploi</div>
+  </div>
+
+  <div class="end-arrow" aria-hidden="true"></div>
+
+</div>
+
+<section class="details">
+    <article id="p1" class="panel" hidden="">
+      <div class="panel-head">
+        <div class="panel-icon">🧭</div>
+        <div>
+          <span class="badge">EPP initial</span>
+          <h3>Première année - Initial</h3>
+        </div>
+      </div>
+      <p>Cet entretien intervient dans la première année d’embauche. Il sert à réaliser un état des lieux du parcours du salarié et à poser une projection professionnelle.</p>
+      <p class="ecrit">Remise obligatoire d’un écrit.</p>
+    </article>
+
+    <article id="p4" class="panel" hidden="">
+      <div class="panel-head">
+        <div class="panel-icon">📌</div>
+        <div>
+          <span class="badge">EPP périodique</span>
+          <h3>Bilan intermédiaire à 4 ans</h3>
+        </div>
+      </div>
+      <p>Un entretien de parcours professionnel est organisé quatre ans plus tard afin d’actualiser la situation du salarié, ses perspectives d’évolution et ses besoins d’accompagnement.</p>
+      <p class="ecrit">Remise obligatoire d’un écrit.</p>
+    </article>
+
+    <article id="p8" class="panel" hidden="">
+      <div class="panel-head">
+        <div class="panel-icon">✅</div>
+        <div>
+          <span class="badge">État des lieux</span>
+          <h3>État des lieux du parcours professionnel à 8 ans</h3>
+        </div>
+      </div>
+      <p>Ce bilan permet de vérifier que le salarié a bénéficié des actions prévues sur son parcours professionnel.</p>
+      <ul>
+        <li>Suivi au moins une action de formation.</li>
+        <li>Acquis des éléments de certification par la formation ou par une VAE.</li>
+        <li>Bénéficié d’une progression salariale ou professionnelle.</li>
+      </ul>
+      <div class="alert">Une sanction peut être appliquée : abondement correctif de 3 000 € sur le CPF si au moins l’une des trois conditions n’est pas respectée.</div>
+      <p class="ecrit">Remise obligatoire d’un écrit.</p>
+    </article>
+
+    <article id="preprise" class="panel" hidden="">
+      <div class="panel-head">
+        <div class="panel-icon">🔄</div>
+        <div>
+          <span class="badge">Reprise après absence</span>
+          <h3>EPP à l’issue de certaines absences longues</h3>
+        </div>
+      </div>
+      <p>Un entretien de parcours professionnel est organisé à l’issue de certaines absences du salarié, notamment après un arrêt longue durée, un congé maternité ou un congé parental d’éducation.</p>
+      <p>Il est à prévoir si le salarié n’a pas eu d’entretien dans les 12 mois précédant la reprise d’activité.</p>
+      <p class="ecrit">Remise obligatoire d’un écrit.</p>
+    </article>
+
+    <article id="p12" class="panel" hidden="">
+      <div class="panel-head">
+        <div class="panel-icon">📌</div>
+        <div>
+          <span class="badge">EPP périodique</span>
+          <h3>Bilan intermédiaire à 12 ans</h3>
+        </div>
+      </div>
+      <p>Un nouvel entretien de parcours professionnel est organisé quatre ans après le précédent cycle, afin de poursuivre le suivi du parcours et des perspectives du salarié.</p>
+      <p class="ecrit">Remise obligatoire d’un écrit.</p>
+    </article>
+
+    <article id="p45" class="panel" hidden="">
+      <div class="panel-head">
+        <div class="panel-icon">🩺</div>
+        <div>
+          <span class="badge">EPP de mi-carrière</span>
+          <h3>Entretien de mi-carrière</h3>
+        </div>
+      </div>
+      <p>Cet EPP est organisé dans les deux mois suivant la visite médicale de mi-carrière.</p>
+      <ul>
+        <li>Évoquer les mesures proposées, le cas échéant, par le médecin du travail.</li>
+        <li>Aborder les thèmes habituels de l’EPP.</li>
+        <li>Échanger sur les missions, le poste de travail et la prévention de l’usure professionnelle.</li>
+      </ul>
+      <p class="ecrit">Remise obligatoire d’un écrit.</p>
+    </article>
+
+    <article id="p5860" class="panel active">
+      <div class="panel-head">
+        <div class="panel-icon">📄</div>
+        <div>
+          <span class="badge">EPP de fin de carrière</span>
+          <h3>Entretien de fin de carrière, entre 58 et 60 ans</h3>
+        </div>
+      </div>
+      <p>Il vise principalement à préparer la fin de parcours professionnel, le maintien dans l’emploi et les éventuels aménagements.</p>
+      <ul>
+        <li>Aborder les thèmes habituels de l’EPP.</li>
+        <li>Examiner les conditions de maintien dans l’emploi.</li>
+        <li>Étudier les possibilités d’aménagement de fin de carrière.</li>
+      </ul>
+      <p class="ecrit">Remise obligatoire d’un écrit.</p>
+    </article>
+  </section>
+</main>
+
+<script>
+function showPanel(id, el){
+  document.querySelectorAll('.details .panel').forEach(function(panel){
+    panel.classList.remove('active');
+    panel.setAttribute('hidden', '');
+  });
+
+  const target = document.getElementById(id);
+  if(target){
+    target.removeAttribute('hidden');
+    target.classList.add('active');
+  }
+
+  document.querySelectorAll('.bubble').forEach(function(bubble){
+    bubble.classList.remove('active');
+    bubble.setAttribute('aria-selected', 'false');
+  });
+
+  if(el){
+    el.classList.add('active');
+    el.setAttribute('aria-selected', 'true');
+  }
+}
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.details .panel').forEach(function(panel){
+    if(panel.classList.contains('active')){
+      panel.removeAttribute('hidden');
+    } else {
+      panel.setAttribute('hidden', '');
+    }
+  });
+});
+</script>
+
+<div style="max-width:1180px;margin:10px auto 40px;background:#071f2f;padding:20px 24px;border-radius:14px;color:white;font-weight:800;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.10);">
+En cas de questions, n'hésitez pas à solliciter le Service RH.
+</div>
+
+
+
+</body></html>
